@@ -12,13 +12,9 @@ class RestServer
     public function __construct()
     {
         try {
-           /* $this->_db = new PDO("mysql:host=dbserver;dbname=rjorel",
+            $this->_db = new PDO("mysql:host=dbserver;dbname=rjorel",
                                  "rjorel",
-                                 "truc"); */
-
-           $this->_db = new PDO("mysql:host=localhost;dbname=rjorel",
-                                 "root",
-                                 "wfusdfcf");
+                                 "truc");
         }
         catch (Exception $e) {
             echo "Error: " . $e->getMessage();
