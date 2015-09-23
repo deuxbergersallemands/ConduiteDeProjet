@@ -12,9 +12,13 @@ class RestServer
     public function __construct()
     {
         try {
-            $this->_db = new PDO("mysql:host=dbserver;dbname=rjorel",
+           /* $this->_db = new PDO("mysql:host=dbserver;dbname=rjorel",
                                  "rjorel",
-                                 "truc");
+                                 "truc"); */
+
+           $this->_db = new PDO("mysql:host=localhost;dbname=rjorel",
+                                 "root",
+                                 "wfusdfcf");
         }
         catch (Exception $e) {
             echo "Error: " . $e->getMessage();
@@ -60,20 +64,58 @@ class RestServer
 
         $req = $this->_db->prepare("SELECT * FROM atelier WHERE Id = ?");
         $req->execute(array($this->_query[1]));
+
         return $this->fetch($req);
     }
 
     public function addWorkshop()
     {
         if (empty($this->_data)) return false;
+        
+        $req = $this->_db->prepare("INSERT INTO atelier(Titre, Theme, Type, Lundi, Mardi, Mercredi, Jeudi, Vendredi,
+                                        Laboratoire, Lieu, Duree, Capacite, Inscription, Resume, AnimConf, Partenaires,
+                                        PublicVise, Contenu)
+                                    VALUES(:ti, :th, :ty, :mon, :tue, :wed, :thu, :fri, :lab, :pl, :du, :ca, :sub, :su,
+                                          :an, :pa, :pu, :co)");
+        $req->execute(array(
+                            'ti' => $this->_data->title,      'pl' => $this->_data->place,
+                            'th' => $this->_data->theme,      'du' => $this->_data->duration,
+                            'ty' => $this->_data->type,       'ca' => $this->_data->capacity,
+                            'mon' => $this->_data->monday,    'sub' => $this->_data->subscription,
+                            'tue' => $this->_data->tuesday,   'su' => $this->_data->summary,
+                            'wed' => $this->_data->wednesday, 'an' => $this->_data->animators,
+                            'thu' => $this->_data->thursday,  'pa' => $this->_data->partners,
+                            'fri' => $this->_data->friday,    'pu' => $this->_data->public,
+                            'lab' => $this->_data->lab,       'co' => $this->_data->content
+                        ));
 
-        return false;
+        $req->closeCursor();
+        return true;
     }
 
     public function updateWorkshop()
     {
         if (empty($this->_query[1]) || empty($this->_data)) return false;
+        
+        $req = $this->_db->prepare("UPDATE atelier SET Titre = :ti, Theme = :th, Type = :ty, Lundi = :mon, 
+                                        Mardi = :tue, Mercredi = :wed, Jeudi = :thu, Vendredi = :fri,
+                                        Laboratoire = :lab, Lieu = :pl, Duree = :du, Capacite = :ca, Inscription = :sub,
+                                        Resume = :su, AnimConf = :an, Partenaires = :pa,
+                                        PublicVise = :pu, Contenu = :co WHERE Id = :id");
+        $req->execute(array(
+                            'ti' => $this->_data->title,      'pl' => $this->_data->place,
+                            'th' => $this->_data->theme,      'du' => $this->_data->duration,
+                            'ty' => $this->_data->type,       'ca' => $this->_data->capacity,
+                            'mon' => $this->_data->monday,    'sub' => $this->_data->subscription,
+                            'tue' => $this->_data->tuesday,   'su' => $this->_data->summary,
+                            'wed' => $this->_data->wednesday, 'an' => $this->_data->animators,
+                            'thu' => $this->_data->thursday,  'pa' => $this->_data->partners,
+                            'fri' => $this->_data->friday,    'pu' => $this->_data->public,
+                            'lab' => $this->_data->lab,       'co' => $this->_data->content,
+                            'id' => $this->_query[1]
+                        ));
 
+        $req->closeCursor();
         return true;
     }
 
@@ -81,7 +123,10 @@ class RestServer
     {
         if (empty($this->_query[1])) return false;
         
-        echo "true";
+        $req = $this->_db->prepare("DELETE FROM atelier WHERE Id = ?");
+        $req->execute(array($this->_query[1]));
+
+        $req->closeCursor();
         return true;
     }
 
