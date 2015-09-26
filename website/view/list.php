@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Gestion des ateliers</title>
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-		<link href="dashboard.css" rel="stylesheet">
+		<link href="assets/css/dashboard.css" rel="stylesheet">
 		
 		<style type="text/css">
 			.headerr a:link{text-decoration:none; color:#7a7a7a;}
