@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Gestion des ateliers</title>
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-		<!-- <link href="dashboard.css" rel="stylesheet"> -->
+		<link href="dashboard.css" rel="stylesheet">
 		
 		<style type="text/css">
 			.headerr a:link{text-decoration:none; color:#7a7a7a;}
@@ -50,10 +50,7 @@
 
 
 if(empty($ateliers)){?> 
-	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-	<h1 style="margin-top:1%;"  class="kio page-header">Welcome</h1>
-	</div>
-	<a style="position:absolute; margin-left:-80%; margin-top:10%;" href="AjoutAtelier.php"  ><img  style =" padding:2px;" src="assets/images/inscrip.png"  
+	<a style="position:absolute; margin-left:-80%; margin-top:10%;" href="?ajouter"  ><img  style =" padding:2px;" src="assets/images/inscrip.png"  
             onMouseOver="changeimage('assets/images/inscrip_.png',this);" onMouseOut="changeimage('assets/images/inscrip.png',this);" /></a>
 	<?php }
 	
