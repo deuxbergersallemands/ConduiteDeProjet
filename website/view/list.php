@@ -15,7 +15,6 @@
 		</style>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
-	<script type="text/javascript" src="oXHR.js"></script>
 		<script type="text/javascript">	
 			function changeimage(url,obj){
 				obj.src=url; 
@@ -50,7 +49,7 @@
 
 
 if(empty($ateliers)){?> 
-	<a style="position:absolute; margin-left:-80%; margin-top:10%;" href="?ajouter"  ><img  style =" padding:2px;" src="assets/images/inscrip.png"  
+	<a style="position:absolute; margin-left:20%; margin-top:1%;" href="?ajouter"  ><img  style =" padding:2px;" src="assets/images/inscrip.png"  
             onMouseOver="changeimage('assets/images/inscrip_.png',this);" onMouseOut="changeimage('assets/images/inscrip.png',this);" /></a>
 	<?php }
 	
