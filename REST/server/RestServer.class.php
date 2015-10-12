@@ -12,6 +12,7 @@ class RestServer
     public function __construct()
     {
         try {
+            // The database is just a example.
             $this->_db = new PDO("mysql:host=dbserver;dbname=rjorel",
                                  "rjorel",
                                  "truc");
@@ -20,13 +21,13 @@ class RestServer
             echo "Error: " . $e->getMessage();
         }
 
-        $this->_method = $_SERVER['REQUEST_METHOD'];
-        $this->_query = explode('/', $_SERVER['QUERY_STRING']);
-        $this->_data = json_decode(file_get_contents("php://input"));
+        $this->_method = $_SERVER['REQUEST_METHOD'];                    // GET, POST, PUT or DEL here.
+        $this->_query = explode('/', $_SERVER['QUERY_STRING']);         // Everything after '?' in the URL.
+        $this->_data = json_decode(file_get_contents("php://input"));   // Data given by the client.
     }
 
 
-    // Utils.
+    // Util functions for more convenient data fetching.
 
     public function fetch($req)
     {
@@ -56,6 +57,7 @@ class RestServer
     
     public function getWorkshopByID()
     {
+        // Workshop ID be given.
         if (empty($this->_query[1])) return false;
 
         $req = $this->_db->prepare("SELECT * FROM atelier WHERE Id = ?");
@@ -66,6 +68,7 @@ class RestServer
 
     public function addWorkshop()
     {
+        // Data must be given.
         if (empty($this->_data)) return false;
         
         $req = $this->_db->prepare("INSERT INTO atelier(Titre, Theme, Type, Lundi, Mardi, Mercredi, Jeudi, Vendredi,
@@ -73,6 +76,8 @@ class RestServer
                                         PublicVise, Contenu)
                                     VALUES(:ti, :th, :ty, :mon, :tue, :wed, :thu, :fri, :lab, :pl, :du, :ca, :sub, :su,
                                           :an, :pa, :pu, :co)");
+
+        // No checks, we assume the client give the good data (not safe).
         $req->execute(array(
                             'ti' => $this->_data->title,      'pl' => $this->_data->place,
                             'th' => $this->_data->theme,      'du' => $this->_data->duration,
@@ -91,6 +96,7 @@ class RestServer
 
     public function updateWorkshop()
     {
+        // Workshop ID and data must be given.
         if (empty($this->_query[1]) || empty($this->_data)) return false;
         
         $req = $this->_db->prepare("UPDATE atelier SET Titre = :ti, Theme = :th, Type = :ty, Lundi = :mon, 
@@ -117,6 +123,7 @@ class RestServer
 
     public function delWorkshop()
     {
+        // Workshop ID must be given.
         if (empty($this->_query[1])) return false;
         
         $req = $this->_db->prepare("DELETE FROM atelier WHERE Id = ?");
@@ -131,9 +138,12 @@ class RestServer
 
     public function execute()
     {
+        // If the query it's not this one, we assume the client gave something more.
         if ($this->_query[0] == "workshops" && $this->_method == "GET")
             echo json_encode($this->getWorkshops());
 
+        // For get, update or delete particular workshop, $_query[1] must be contain the workshop ID.
+        // For add and update, data must be given too.
         else if ($this->_query[0] == "workshop") {
             switch ($this->_method) {
                 case "GET":

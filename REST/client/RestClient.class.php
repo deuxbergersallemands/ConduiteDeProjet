@@ -5,7 +5,7 @@ class RestClient
 {
     private $_url;
 
-    // Valeurs par défaut des champs, pour ne pas être obligé de remplir tout le tableau.
+    // Defaults values, to don't have to fill all the array fields.
     private $_defaultKeys = array('titre' => null, 'theme' => null, 'type' => null, 'lundiAM' => 0, 'lundiPM' => 0,
                                     'mardiAM' => 0, 'mardiPM' => 0, 'mercrediAM' => 0, 'mercrediPM' => 0, 'jeudiAM' => 0,
                                     'jeudiPM' => 0, 'vendrediAM' => 0, 'vendrediAM' => 0, 'vendrediPM' => 0, 'laboratoire' => null,
@@ -20,21 +20,26 @@ class RestClient
     }
 
 
+    // GET method for all the ateliers.
     public function getAteliers()
     {
         return json_decode(file_get_contents("$this->_url/?workshops/"));
     }
 
+    // Specific GET for just one atelier.
     public function getAtelierByID($id)
     {
         return json_decode(file_get_contents("$this->_url/?workshop/$id"));
     }
 
+    // Atelier adding, POST method.
     public function addAtelier($valeurs = array())
     {
         $valeurs = array_merge($this->_defaultKeys, $valeurs);
         $opts = array('http' => array('method'=>'POST',
                                         'header'=>'Content-type: application/x-www-form-urlencoded'));
+
+        // All these fields come from the original view.
         $opts['http']['content'] = json_encode(array('title' =>             $valeurs['titre'],
                                                        'theme' =>           $valeurs['theme'],
                                                        'type' =>            $valeurs['type'],
@@ -55,11 +60,13 @@ class RestClient
                                                        'content' =>         $valeurs['contenu']
                                                        ));
 
+        // Execute the request.
         $request = file_get_contents(
                         "$this->_url/?workshop", false, 
                         stream_context_create($opts));
     }
-    
+   
+    // The same, but with PUT method. Just the atelier ID more.
     public function updateAtelier($id, $valeurs = array())
     {
         $valeurs = array_merge($this->_defaultKeys, $valeurs);
@@ -90,6 +97,7 @@ class RestClient
                         stream_context_create($opts));
     }
 
+    // And the DEL method.
     public function delAtelier($id)
     {
         $opts = array('http' => array('method'=>'DEL',

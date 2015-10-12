@@ -3,8 +3,6 @@
 include_once("RestClient.class.php");
 
 
-// $client = new RestClient("http://raphael.jorel.emi.u-bordeaux.fr/REST/server");
-
 /* $client = new RestClient("http://localhost/server");
 $request = $client->addAtelier(array('titre' => "Truc", 'theme' => "Informatique", 'type' => "Bidule",
                                  //      'lundiAM' => 1, 'mardiPM' => 1));
